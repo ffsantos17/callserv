@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "12220459249",
+    "firebase_url": "https://callserv-380d8-default-rtdb.firebaseio.com",
+    "project_id": "callserv-380d8",
+    "storage_bucket": "callserv-380d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12220459249:android:42c3bf55935eae3066a150",
+        "android_client_info": {
+          "package_name": "com.example.callcerv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12220459249-krb08bqh0ansk2ps90t9kja6tmnsck0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj0ZvTUdashi8H2NYJvhGm9mc4bLNfQxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12220459249-krb08bqh0ansk2ps90t9kja6tmnsck0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
