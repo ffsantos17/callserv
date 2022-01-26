@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:callcerv/models/service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +53,14 @@ class _HomePageState extends State<AnunciosPage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              primary: Colors.white,
-              textStyle: const TextStyle(fontSize: 15),
-            ),
-            onPressed: () {auth.signOut();Navigator.push(context, MaterialPageRoute(builder: (context) => MyHome()),);},
-            child: const Text('Sair'),
-          ),
+          //TextButton(
+            //style: TextButton.styleFrom(
+            //  primary: Colors.white,
+           //   textStyle: const TextStyle(fontSize: 15),
+          //  ),
+          //  onPressed: () {auth.signOut();Navigator.push(context, MaterialPageRoute(builder: (context) => MyHome()),);},
+          //  child: const Text('Sair'),
+          //),
         ],
       ),
       body: SingleChildScrollView(
@@ -82,6 +84,11 @@ class _HomePageState extends State<AnunciosPage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Novo Anuncio',
+        child: Icon(Icons.add),
+      ),
         drawer: Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll
           // through the options in the drawer if there isn't enough vertical
@@ -94,10 +101,11 @@ class _HomePageState extends State<AnunciosPage> {
                 decoration: BoxDecoration(
                   color: Colors.red,
                 ),
-                child: Text("nome"),
+                child: Text("Usuario XXX", style: TextStyle(color: Colors.white, fontSize: 20),),
+
               ),
               ListTile(
-                title: const Text('Item 1'),
+                title: const Text('Meus anuncios'),
                 onTap: () {
                   // Update the state of the app
                   // ...
@@ -106,13 +114,8 @@ class _HomePageState extends State<AnunciosPage> {
                 },
               ),
               ListTile(
-                title: const Text('Item 2'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
+                title: const Text('Sair'),
+                onTap: () {auth.signOut();Navigator.push(context, MaterialPageRoute(builder: (context) => MyHome()),);},
               ),
             ],
           ),
