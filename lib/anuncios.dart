@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:callcerv/MeusAnuncios.dart';
 import 'package:callcerv/models/service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'Data.dart';
 import 'List.dart';
+import 'cadastroAnuncio.dart';
 import 'home.dart';
 
 class Anuncios extends StatelessWidget {
@@ -42,26 +44,18 @@ class AnunciosPage extends StatefulWidget {
 class _HomePageState extends State<AnunciosPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('dadosUsuarios');
 
 
   @override
   Widget build(BuildContext context) {
     User? usuarioAtual = auth.currentUser;
     String? idUsuarioLogado = usuarioAtual?.uid;
+
     if(usuarioAtual != null){
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          //TextButton(
-            //style: TextButton.styleFrom(
-            //  primary: Colors.white,
-           //   textStyle: const TextStyle(fontSize: 15),
-          //  ),
-          //  onPressed: () {auth.signOut();Navigator.push(context, MaterialPageRoute(builder: (context) => MyHome()),);},
-          //  child: const Text('Sair'),
-          //),
-        ],
+        title: Text("Anuncios"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -85,7 +79,7 @@ class _HomePageState extends State<AnunciosPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroAnuncio()),);},
         tooltip: 'Novo Anuncio',
         child: Icon(Icons.add),
       ),
@@ -110,7 +104,10 @@ class _HomePageState extends State<AnunciosPage> {
                   // Update the state of the app
                   // ...
                   // Then close the drawer
-                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MeusAnuncios()),
+                  );
                 },
               ),
               ListTile(
@@ -120,8 +117,10 @@ class _HomePageState extends State<AnunciosPage> {
             ],
           ),
         ),
+
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+
     }else{
       return Scaffold(
         appBar: AppBar(
