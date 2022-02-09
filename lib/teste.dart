@@ -32,6 +32,8 @@ class Anuncios extends StatelessWidget {
   }
 }
 
+
+
 class AnunciosPage extends StatefulWidget {
   const AnunciosPage({Key? key, required this.title}) : super(key: key);
 
@@ -39,30 +41,37 @@ class AnunciosPage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
+
 }
+
+
+
+
 
 class _HomePageState extends State<AnunciosPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
-  CollectionReference users =
-      FirebaseFirestore.instance.collection('dadosUsuarios');
+  CollectionReference users = FirebaseFirestore.instance.collection('dadosUsuarios');
 
-  Stream<QuerySnapshot> _getList() {
-    return db.collection('anuncios').snapshots();
+
+  Stream<QuerySnapshot> _getList(){
+    return db.collection('dadosUsuarios').snapshots();
   }
+
 
   @override
   Widget build(BuildContext context) {
+
+
     User? usuarioAtual = auth.currentUser;
     String? idUsuarioLogado = usuarioAtual?.uid;
     String? emailUsuarioLogado = usuarioAtual?.email;
 
-    Stream documentStream = FirebaseFirestore.instance
-        .collection('anuncios')
-        .doc(idUsuarioLogado)
-        .snapshots();
 
-    if (usuarioAtual != null) {
+    Stream documentStream = FirebaseFirestore.instance.collection('dadosUsuarios').doc(idUsuarioLogado).snapshots();
+
+
+    if(usuarioAtual != null){
       return Scaffold(
         appBar: AppBar(
           title: Text("Anuncios"),
@@ -73,47 +82,23 @@ class _HomePageState extends State<AnunciosPage> {
             width: MediaQuery.of(context).size.width,
             child: Stack(
               children: <Widget>[
+
                 Container(
                   padding: EdgeInsets.only(top: 25),
                   height: MediaQuery.of(context).size.height,
                   width: double.infinity,
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: _getList(),
-                    builder: (_, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                          // TODO: Handle this case.
-                          break;
-                        case ConnectionState.waiting:
-                          // TODO: Handle this case.
-                          break;
-                        case ConnectionState.active:
-
-                        case ConnectionState.done:
-                          // TODO: Handle this case.
-                          break;
-                      }
-
-
-                      return ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return userList(context, index);
-                          });
-                    },
-                  ),
+                  child: ListView.builder(
+                      itemCount: services.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return userList(context, index);
+                      }),
                 ),
               ],
             ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CadastroAnuncio()),
-            );
-          },
+          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroAnuncio()),);},
           tooltip: 'Novo Anuncio',
           child: Icon(Icons.add),
         ),
@@ -121,46 +106,41 @@ class _HomePageState extends State<AnunciosPage> {
           // Add a ListView to the drawer. This ensures the user can scroll
           // through the options in the drawer if there isn't enough vertical
           // space to fit everything.
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              UserAccountsDrawerHeader(
-                accountEmail: Text(emailUsuarioLogado!),
-                accountName: Text(''),
-                currentAccountPicture: CircleAvatar(
-                  child: Text("SZ"),
-                ),
-              ),
-              ListTile(
-                title: const Text('Meus anuncios'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MeusAnuncios()),
-                  );
-                },
-              ),
-              ListTile(
-                title: const Text('Sair'),
-                onTap: () {
-                  auth.signOut();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyHome()),
-                  );
-                },
-              ),
-            ],
+          child: StreamBuilder<QuerySnapshot>(
+            stream: _getList(),
+            builder: (_, snapshot ){
+              switch(snapshot.connectionState){
+                case ConnectionState.none:
+                // TODO: Handle this case.
+                  break;
+                case ConnectionState.waiting:
+                // TODO: Handle this case.
+                  break;
+                case ConnectionState.active:
+
+                case ConnectionState.done:
+                // TODO: Handle this case.
+                  break;
+              }
+              return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: ( _, index){
+                    final DocumentSnapshot doc = snapshot.data!.docs[index];
+                    return ListTile(
+                      title: Text(doc['username']),
+                    );
+                  }
+              );
+            },
           ),
+
+
         ),
 
         // This trailing comma makes auto-formatting nicer for build methods.
       );
-    } else {
+
+    }else{
       return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -173,27 +153,29 @@ class _HomePageState extends State<AnunciosPage> {
                 height: 40.0,
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: RaisedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
-                    )
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
+                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()),) },
+                  shape: RoundedRectangleBorder(borderRadius:
+                  BorderRadius.circular(5.0)),
 
                   child: const Text(
                     "Logar",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ), //Text
-                  color: Colors.red,
-                ), //RaisedButton
+                  color:Colors.red,
+                ),//RaisedButton
+
               ),
+
             ],
+
+
           ),
+
+
         ),
         // This trailing comma makes auto-formatting nicer for build methods.
       );
     }
   }
+
 }

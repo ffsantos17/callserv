@@ -120,16 +120,18 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
               child: RaisedButton(
                 onPressed: () => {
                   db.collection("meus_anuncios").doc(idUsuarioLogado).collection("anuncios").doc(idAnuncio).set({
-                    "nome": _controllerServico.text,
+                    "servico": _controllerServico.text,
                     "valor": _controllerValor.text,
                     "categoria": dropdownValue,
-                    "NF": selectRadio
+                    "NF": selectRadio,
+                    "vendedor": idUsuarioLogado
                   }).then((_) {
                     db.collection("anuncios").doc(idAnuncio).set({
-                      "nome": _controllerServico.text,
+                      "servico": _controllerServico.text,
                       "valor": _controllerValor.text,
                       "categoria": dropdownValue,
-                      "NF": selectRadio
+                      "NF": selectRadio,
+                      "vendedor": idUsuarioLogado
                     }).then((_) {
                       Navigator.push(
                         context,
