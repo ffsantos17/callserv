@@ -39,8 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 26, left: 10, right: 10),
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
@@ -51,8 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: _controllerEmail,
                 autofocus: true,
                 keyboardType: TextInputType.text,
-                style: TextStyle(color: Colors.black, fontSize: 20),
-                decoration: InputDecoration(
+                style: const TextStyle(color: Colors.black, fontSize: 20),
+                decoration: const InputDecoration(
                   labelText:"email do usuário",
                   labelStyle: TextStyle(color: Colors.black),
                 )
@@ -62,13 +64,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 autofocus: true,
                 obscureText: true,
                 keyboardType: TextInputType.text,
-                style: TextStyle(color: Colors.black, fontSize: 20),
-                decoration: InputDecoration(
+                style: const TextStyle(color: Colors.black, fontSize: 20),
+                decoration: const InputDecoration(
                   labelText:"Senha do usuário",
                   labelStyle: TextStyle(color: Colors.black),
                 )
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             ButtonTheme(
               height: 50.0,
               padding: EdgeInsets.only(left: 70, right: 70),

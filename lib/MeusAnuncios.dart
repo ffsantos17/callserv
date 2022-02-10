@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'Data.dart';
 import 'List.dart';
+import 'ListMeusAnuncios.dart';
+import 'cadastroAnuncio.dart';
 
 class MeusAnuncios extends StatefulWidget {
   const MeusAnuncios({Key? key}) : super(key: key);
@@ -13,28 +15,26 @@ class MeusAnuncios extends StatefulWidget {
   @override
   _MeusAnunciosState createState() => _MeusAnunciosState();
 }
+FirebaseFirestore db = FirebaseFirestore.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
+CollectionReference users = FirebaseFirestore.instance.collection(
+    'dadosUsuarios');
+
+
 
 class _MeusAnunciosState extends State<MeusAnuncios> {
 
   final _controller = StreamController<QuerySnapshot>.broadcast();
 
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
-  late String _idUsuarioLogado;
-  _recuperaDadosUsuarioLogado() async {
-
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? usuarioAtual = auth.currentUser;
-    _idUsuarioLogado = usuarioAtual!.uid;
-
-  }
-
-  Stream<QuerySnapshot> _getList(){
-    return db.collection("meusAnuncios").doc("6lKBzQZtsTNjgNvFqufEdEOhoy33").collection("anuncios").snapshots();;
-  }
-
   @override
   Widget build(BuildContext context) {
+    User? usuarioAtual = auth.currentUser;
+    String? idUsuarioLogado = usuarioAtual?.uid;
+    String? emailUsuarioLogado = usuarioAtual?.email;
+
+    Stream<QuerySnapshot> _getList(){
+      return db.collection("meus_anuncios").doc(idUsuarioLogado).collection("anuncios").snapshots();;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Meus Anuncios"),
@@ -57,27 +57,46 @@ class _MeusAnunciosState extends State<MeusAnuncios> {
                       // TODO: Handle this case.
                         break;
                       case ConnectionState.waiting:
-                      // TODO: Handle this case.
-                        break;
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       case ConnectionState.active:
 
                       case ConnectionState.done:
                       // TODO: Handle this case.
                         break;
                     }
-
-
-                    return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return userList(context, index);
-                        });
+                    int cont = snapshot.data!.docs.length;
+                    if (cont > 0) {
+                      return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return userListMeus(context, index);
+                          });
+                    }else{
+                      return const Text("Nenhum anuncio cadastrado",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12),);
+                    }
                   },
                 ),
               ),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CadastroAnuncio()),
+          );
+        },
+        tooltip: 'Novo Anuncio',
+        child: Icon(Icons.add),
       ),
     );
   }

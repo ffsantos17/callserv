@@ -69,7 +69,8 @@ class _TCadastroState extends State<TCadastro> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -80,7 +81,7 @@ class _TCadastroState extends State<TCadastro> {
 
             TextField(
               controller: _controllerEmail,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(color: Colors.black)
               ),
@@ -88,7 +89,7 @@ class _TCadastroState extends State<TCadastro> {
             TextField(
               controller: _controllerSenha,
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Senha",
                   labelStyle: TextStyle(color: Colors.black)
               ),

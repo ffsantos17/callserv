@@ -40,7 +40,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

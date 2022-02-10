@@ -49,20 +49,21 @@ class _DadosUsuarioState extends State<DadosUsuario> {
     String? idUsuarioLogado = usuarioLogado?.uid;
     return Scaffold(
       appBar: AppBar(
-        title: Text("CallServ"),
+        title: const Text("Dados do Usuario"),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'CallServ',
+              'Completar cadastro',
               style: TextStyle(color: Colors.red, fontSize: 30, fontWeight: FontWeight.bold),
             ),
 
             TextField(
               controller: _controllerUname,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Username",
                   labelStyle: TextStyle(color: Colors.black)
               ),
@@ -80,8 +81,8 @@ class _DadosUsuarioState extends State<DadosUsuario> {
                 TelefoneInputFormatter(),
               ],
             ),
-            SizedBox(height: 30),
-            Text("Estado"),
+            const SizedBox(height: 30),
+            const Text("Estado"),
             DropdownButton<String>(
               value: dropdownValue,
               icon: const Icon(Icons.arrow_drop_down),
@@ -101,8 +102,8 @@ class _DadosUsuarioState extends State<DadosUsuario> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 30),
-            Text("Tipo de cadastro"),
+            const SizedBox(height: 30),
+            const Text("Tipo de cadastro"),
 
             RadioListTile(
                 title: const Text('Contratante'),

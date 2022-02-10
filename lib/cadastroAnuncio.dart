@@ -35,6 +35,20 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
     });
   }
 
+  _abrirDialog(BuildContext context){
+    showDialog(context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return AlertDialog(
+            content: Column(children: const <Widget>[
+              CircularProgressIndicator(),
+              SizedBox(height: 20,),
+              Text("Salvando Anuncio")
+            ],)
+          );
+        }
+    );
+  }
 
 
   @override
@@ -49,7 +63,7 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
       appBar: AppBar(
         title: Text("CallServ"),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -119,6 +133,9 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
               padding: EdgeInsets.only(left: 70, right: 70),
               child: RaisedButton(
                 onPressed: () => {
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   db.collection("meus_anuncios").doc(idUsuarioLogado).collection("anuncios").doc(idAnuncio).set({
                     "servico": _controllerServico.text,
                     "valor": _controllerValor.text,
@@ -133,7 +150,7 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
                       "NF": selectRadio,
                       "vendedor": idUsuarioLogado
                     }).then((_) {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => MeusAnuncios()),
                       );

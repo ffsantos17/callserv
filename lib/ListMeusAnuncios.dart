@@ -18,23 +18,23 @@ CollectionReference users = FirebaseFirestore.instance.collection(
     'dadosUsuarios');
 
 
-Stream<QuerySnapshot> _getList() {
-  return db.collection('anuncios').snapshots();
-}
-
-User? usuarioAtual = auth.currentUser;
-String? idUsuarioLogado = usuarioAtual?.uid;
-String? emailUsuarioLogado = usuarioAtual?.email;
 
 
+Widget userListMeus(BuildContext context, int index) {
+  User? usuarioAtual = auth.currentUser;
+  String? idUsuarioLogado = usuarioAtual?.uid;
+  String? emailUsuarioLogado = usuarioAtual?.email;
+
+  Stream<QuerySnapshot> _getList() {
+    return db.collection('meus_anuncios').doc(idUsuarioLogado).collection('anuncios').snapshots();
+  }
 
 
-Stream documentStream = FirebaseFirestore.instance.collection('anuncios')
-    .snapshots();
 
-Widget userList(BuildContext context, int index) {
-
-
+  Stream documentStream = FirebaseFirestore.instance.collection('meus_anuncios')
+      .doc(idUsuarioLogado)
+      .collection('anuncios')
+      .snapshots();
 
   return Container(
     decoration: const BoxDecoration(
@@ -66,8 +66,6 @@ Widget userList(BuildContext context, int index) {
         final DocumentSnapshot doc = snapshot.data!.docs[index];
         String idVendedor = doc['vendedor'];
         CollectionReference users = FirebaseFirestore.instance.collection('dadosUsuarios');
-
-
         return Row(
 
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +162,6 @@ Widget userList(BuildContext context, int index) {
                               color: primary, fontSize: 13, letterSpacing: .3)),
                     ],
                   ),
-
                 ],
               ),
             ),

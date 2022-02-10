@@ -16,40 +16,23 @@ import 'home.dart';
 import 'package:callcerv/DadosUsuario.dart';
 import 'package:callcerv/Usuario.dart';
 
-class Anuncios extends StatelessWidget {
+class Anuncios extends StatefulWidget {
   const Anuncios({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CallServ',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: const AnunciosPage(title: 'CallServ'),
-    );
-  }
+  _AnunciosState createState() => _AnunciosState();
 }
 
-class AnunciosPage extends StatefulWidget {
-  const AnunciosPage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<AnunciosPage> {
+class _AnunciosState extends State<Anuncios> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
   CollectionReference users =
-      FirebaseFirestore.instance.collection('dadosUsuarios');
+  FirebaseFirestore.instance.collection('dadosUsuarios');
 
   Stream<QuerySnapshot> _getList() {
     return db.collection('anuncios').snapshots();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,24 +40,31 @@ class _HomePageState extends State<AnunciosPage> {
     String? idUsuarioLogado = usuarioAtual?.uid;
     String? emailUsuarioLogado = usuarioAtual?.email;
 
-    Stream documentStream = FirebaseFirestore.instance
-        .collection('anuncios')
+    String LetraString = emailUsuarioLogado!.substring(0,2);
+    FirebaseFirestore.instance
+        .collection('dadosUsuarios')
         .doc(idUsuarioLogado)
-        .snapshots();
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      return documentSnapshot.get(FieldPath(['username']));
+    });
+
+    CollectionReference users = FirebaseFirestore.instance.collection('dadosUsuarios');
+
+
 
     if (usuarioAtual != null) {
       return Scaffold(
         appBar: AppBar(
           title: Text("Anuncios"),
         ),
-        body: SingleChildScrollView(
+        body: Center(
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Stack(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(top: 25),
                   height: MediaQuery.of(context).size.height,
                   width: double.infinity,
                   child: StreamBuilder<QuerySnapshot>(
@@ -82,15 +72,16 @@ class _HomePageState extends State<AnunciosPage> {
                     builder: (_, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
-                          // TODO: Handle this case.
+                        // TODO: Handle this case.
                           break;
                         case ConnectionState.waiting:
-                          // TODO: Handle this case.
-                          break;
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         case ConnectionState.active:
 
                         case ConnectionState.done:
-                          // TODO: Handle this case.
+                        // TODO: Handle this case.
                           break;
                       }
 
@@ -126,10 +117,30 @@ class _HomePageState extends State<AnunciosPage> {
             padding: EdgeInsets.zero,
             children: [
               UserAccountsDrawerHeader(
-                accountEmail: Text(emailUsuarioLogado!),
-                accountName: Text(''),
+                accountEmail: Text(emailUsuarioLogado),
+                accountName:     FutureBuilder<DocumentSnapshot>(
+                  future: users.doc(idUsuarioLogado).get(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+                    if (snapshot.hasError) {
+                      return Text("Something went wrong");
+                    }
+
+                    if (snapshot.hasData && !snapshot.data!.exists) {
+                      return Text("Document does not exist");
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                      return Text(data['username']);
+                    }
+
+                    return Text("loading");
+                  },
+                ),
                 currentAccountPicture: CircleAvatar(
-                  child: Text("SZ"),
+                  child: Text(LetraString),
                 ),
               ),
               ListTile(
@@ -163,7 +174,7 @@ class _HomePageState extends State<AnunciosPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text('Anuncios'),
         ),
         body: Center(
           child: Column(
