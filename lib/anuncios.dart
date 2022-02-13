@@ -51,12 +51,9 @@ class _AnunciosState extends State<Anuncios> {
 
     CollectionReference users = FirebaseFirestore.instance.collection('dadosUsuarios');
 
-
-
-    if (usuarioAtual != null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Anuncios"),
+          title: Text("Anúncios"),
         ),
         body: Center(
           child: Container(
@@ -171,40 +168,5 @@ class _AnunciosState extends State<Anuncios> {
 
         // This trailing comma makes auto-formatting nicer for build methods.
       );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Anuncios'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ButtonTheme(
-                height: 40.0,
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: RaisedButton(
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
-                    )
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-
-                  child: const Text(
-                    "Logar",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ), //Text
-                  color: Colors.red,
-                ), //RaisedButton
-              ),
-            ],
-          ),
-        ),
-        // This trailing comma makes auto-formatting nicer for build methods.
-      );
-    }
   }
 }

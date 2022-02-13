@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp();
 
 
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     title: "CallServ",
     home: MyHome(),
     initialRoute: "/",

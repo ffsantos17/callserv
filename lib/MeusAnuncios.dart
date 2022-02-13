@@ -37,9 +37,9 @@ class _MeusAnunciosState extends State<MeusAnuncios> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Meus Anuncios"),
+        title: Text("Meus Anúncios"),
       ),
-      body: SingleChildScrollView(
+      body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,

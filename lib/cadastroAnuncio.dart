@@ -58,10 +58,12 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
     CollectionReference anuncios = db.collection("meus_anuncios");
     String idAnuncio = anuncios.doc().id;
 
+    int selectRadio = 2;
+
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("CallServ"),
+        title: Text("Cadastrar anúncio"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -130,32 +132,53 @@ class _CadastroAnuncioState extends State<CadastroAnuncio> {
                 }),
             ButtonTheme(
               height: 50.0,
-              padding: EdgeInsets.only(left: 70, right: 70),
+              padding: const EdgeInsets.only(left: 70, right: 70),
               child: RaisedButton(
                 onPressed: () => {
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  db.collection("meus_anuncios").doc(idUsuarioLogado).collection("anuncios").doc(idAnuncio).set({
-                    "servico": _controllerServico.text,
-                    "valor": _controllerValor.text,
-                    "categoria": dropdownValue,
-                    "NF": selectRadio,
-                    "vendedor": idUsuarioLogado
-                  }).then((_) {
-                    db.collection("anuncios").doc(idAnuncio).set({
-                      "servico": _controllerServico.text,
-                      "valor": _controllerValor.text,
-                      "categoria": dropdownValue,
-                      "NF": selectRadio,
-                      "vendedor": idUsuarioLogado
-                    }).then((_) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => MeusAnuncios()),
-                      );
-                    });
-                  })
+
+                  if(_controllerServico.text == '' || _controllerValor.text == ''){
+                        showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text("Atenção"),
+                          content: const Text("Preencha todos os campos do anúncio"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: const Text('Ok'),
+                              onPressed: () =>
+                                  Navigator.of(ctx).pop(false),
+                            ),
+                          ],
+                        ),
+                      ),
+                  }else{
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      db.collection("meus_anuncios").doc(idUsuarioLogado)
+                          .collection("anuncios").doc(idAnuncio).set({
+                        "servico": _controllerServico.text,
+                        "valor": _controllerValor.text,
+                        "categoria": dropdownValue,
+                        "NF": selectRadio,
+                        "vendedor": idUsuarioLogado
+                      })
+                          .then((_) {
+                        db.collection("anuncios").doc(idAnuncio).set({
+                          "servico": _controllerServico.text,
+                          "valor": _controllerValor.text,
+                          "categoria": dropdownValue,
+                          "NF": selectRadio,
+                          "vendedor": idUsuarioLogado
+                        }).then((_) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MeusAnuncios()),
+                          );
+                        });
+                      })
+                    },
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0)),

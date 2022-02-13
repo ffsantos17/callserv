@@ -43,7 +43,7 @@ Widget userListMeus(BuildContext context, int index) {
       color: Colors.black12,
     ),
     width: double.infinity,
-    height: 120,
+    height: 167,
     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
     child: StreamBuilder<QuerySnapshot>(
@@ -161,6 +161,50 @@ Widget userListMeus(BuildContext context, int index) {
                           style: TextStyle(
                               color: primary, fontSize: 13, letterSpacing: .3)),
                     ],
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5),textStyle: const TextStyle(fontSize: 12),),
+                    child: RichText(
+                      text: const TextSpan(
+                        children: [
+                          WidgetSpan(
+                            child: Icon(Icons.delete, size: 17),
+                          ),
+                          TextSpan(
+                            text: " Deletar",
+                          ),
+                        ],
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text("Excluir anúncio"),
+                          content: Text("Tem certeza que deseja excluir o anúncio ${doc['servico']}?"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Não'),
+                              onPressed: () =>
+                                  Navigator.of(ctx).pop(false),
+                            ),
+                            FlatButton(
+                              child: Text('Sim'),
+                              onPressed: () {
+                                String docID = doc.id;
+                                db.collection('meus_anuncios').doc(idUsuarioLogado).collection('anuncios').doc(docID).delete();
+                                db.collection('anuncios').doc(docID).delete();
+                                Navigator.of(ctx).pop(true);
+                                },
+                            ),
+                          ],
+                        ),
+                      );
+
+
+
+
+                    },
                   ),
                 ],
               ),

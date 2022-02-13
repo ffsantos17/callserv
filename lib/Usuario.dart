@@ -37,12 +37,12 @@ class Usuario{
 
   }
 
-
   String get username => _username;
 
   set username(String value) {
     _username = value;
   }
+
 
   String get telefone => _telefone;
 
