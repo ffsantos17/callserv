@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'Anuncio.dart';
 import 'Data.dart';
 import 'package:callcerv/Usuario.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 final primary = Colors.indigo;
@@ -209,7 +210,7 @@ Widget userList(BuildContext context, int index) {
                                   const Text('Contatar Profissional',
                                     style: TextStyle(
                                     color: Colors.black, fontSize: 20, letterSpacing: .3)),
-                                  const SizedBox(height: 30),
+                                  const SizedBox(height: 20),
                                   FutureBuilder<DocumentSnapshot>(
                                     future: users.doc(idVendedor).get(),
                                     builder:
@@ -225,9 +226,19 @@ Widget userList(BuildContext context, int index) {
 
                                       if (snapshot.connectionState == ConnectionState.done) {
                                         Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                                        return Text(data['telefone'],
-                                            style: const TextStyle(
-                                                color: Colors.black, fontSize: 16, letterSpacing: .3));
+                                        return Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            Text(data['telefone'],
+                                          style: const TextStyle(
+                                          color: Colors.black, fontSize: 16, letterSpacing: .3)),
+
+                                            FlatButton(
+                                              child: Icon(Icons.call, size: 20, color: Colors.red,),
+                                              onPressed: () => launch("tel:${data['telefone']}"),
+                                            )
+                                          ],
+                                        );
                                       }
 
                                       return Text("loading");

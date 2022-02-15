@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 20),
+        padding: EdgeInsets.only(top: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
